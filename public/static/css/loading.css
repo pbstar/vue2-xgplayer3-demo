@@ -25,7 +25,7 @@
   font-size: 64px;
   width: 64px;
   height: 64px;
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 .loading-dot i {
@@ -38,7 +38,7 @@
   transform: scale(.75);
   transform-origin: 50% 50%;
   opacity: .3;
-  animation: antSpinMove 1s infinite linear alternate
+  animation: antSpinMove 1s infinite linear alternate;
 }
 
 .loading-dot i:nth-child(1) {
