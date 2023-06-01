@@ -8,7 +8,7 @@
 import Player from "xgplayer";
 import "xgplayer/dist/index.min.css";
 export default {
-  name: "detailVideo",
+  name: "xgVideo",
   data() {
     return {
       player: null,
@@ -25,7 +25,7 @@ export default {
       }
       this.player = new Player({
         el: this.$refs.xgplayer,
-        url: "//abc.com/**/*.mp4",
+        url: "https://bsy.newchuangye.com/onlineEducationTangshan/video/64-hebeiGYB24/1.mp4",
         height: "100%",
         width: "100%",
       });

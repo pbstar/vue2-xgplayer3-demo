@@ -26,19 +26,6 @@ const routes = [
     name: "detail",
     meta: { title: "详情" },
     component: resolve => (require(["@/views/detail"], resolve)),
-    children: [
-      {
-        path: "video",
-        name: "detailVideo",
-        meta: { title: "详情-视频" },
-        component: resolve => (require(["@/views/detail/video"], resolve)),
-      }, {
-        path: "test",
-        name: "detailTest",
-        meta: { title: "详情-测试题" },
-        component: resolve => (require(["@/views/detail/test"], resolve)),
-      }
-    ]
   },
   {
     path: "/login",

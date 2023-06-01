@@ -104,23 +104,25 @@ export default {
         border-radius: 20px;
         padding: 0px 30px;
         width: 350px;
-        height: 420px;
+        height: 380px;
+        margin-top: 80px;
+        margin-right: 90px;
         background-color: #ffffffef;
 
         .title {
           font-weight: normal;
           font-size: 26px;
           color: #828282;
-          margin-top: 50px;
+          margin-top: 45px;
           margin-bottom: 20px;
         }
         p {
           color: #656464;
           font-size: 14px;
-          line-height: 16px;
+          line-height: 20px;
         }
         .username {
-          margin-top: 60px;
+          margin-top: 40px;
           margin-bottom: 10px;
           /deep/ .el-input__inner {
             height: 45px;

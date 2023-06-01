@@ -5,6 +5,17 @@
         <div class="left">
           <img src="@/assets/imgs/header-logo.png" alt="" />
         </div>
+        <div class="right">
+          <el-dropdown trigger="click" v-if="username" @command="handleCommand">
+            <span class="el-dropdown-link">
+              {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="1">我的课程</el-dropdown-item>
+              <el-dropdown-item command="2">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </div>
       <!-- <div class="f2box">
         <div class="s2box w1200">
@@ -20,9 +31,28 @@
 export default {
   name: "headerBox",
   data() {
-    return {};
+    return {
+      username: "",
+    };
   },
-  methods: {},
+  created() {
+    let username = this.$unit.getLocalStorage("username");
+    if (username) {
+      this.username = username;
+    }
+  },
+  methods: {
+    handleCommand(e) {
+      if (e == 1) {
+        this.$router.push("list");
+      } else if (e == 2) {
+        this.$confirm("确认退出登录吗？").then(() => {
+          this.$unit.clearLocalStorage();
+          this.$router.push("login");
+        });
+      }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

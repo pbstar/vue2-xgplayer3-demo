@@ -76,8 +76,56 @@ function post(url, data) {
       });
   });
 }
+function getCourseList(name) {
+  let data = new Object()
+  data.axiosTime = new Date().getTime()
+  return new Promise((resolve, reject) => {
+    axios
+      .get('./static/json/course/' + name + '.js', {
+        params: data,
+      })
+      .then((res) => {
+        if (res && res.data) {
+          let list = []
+          let arr1 = res.data.mouduleList
+          let arr2 = res.data.courseList
+          let arr3 = res.data.sectionList
+          for (let a = 0; a < arr1.length; a++) {
+            arr1[a].children = []
+            for (let b = 0; b < arr2.length; b++) {
+              if (arr2[b].mouduleId == arr1[a].mouduleId) {
+                arr2[b].children = []
+                for (let c = 0; c < arr3.length; c++) {
+                  if (arr3[c].courseId == arr2[b].courseId) {
+                    arr2[b].children.push(arr3[c])
+                  }
+                }
+                arr1[a].children.push(arr2[b])
+              }
+            }
+            list.push(arr1[a])
+          }
+          resolve({
+            code: 200,
+            msg: 'success',
+            data: list
+          });
+        } else {
+          resolve({
+            code: 100,
+            msg: 'err',
+            data: null
+          });
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
 export default {
   defaultGet,
   get,
   post,
+  getCourseList
 };
