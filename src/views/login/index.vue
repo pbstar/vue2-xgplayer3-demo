@@ -6,7 +6,12 @@
         <div class="sbox w1200">
           <div></div>
           <div class="loginBox">
-            <h3 class="title">后台管理系统</h3>
+            <h3 class="title">
+              <span>欢迎参加</span>
+              <span style="color: #5490ff">线上实训课程</span>
+            </h3>
+            <p>请使用本人注册的</p>
+            <p>账号密码登录</p>
             <el-input
               class="username"
               placeholder="请输入账号"
@@ -103,10 +108,19 @@ export default {
         background-color: #ffffffef;
 
         .title {
-          margin-bottom: 20px;
+          font-weight: normal;
           font-size: 26px;
+          color: #828282;
+          margin-top: 50px;
+          margin-bottom: 20px;
+        }
+        p {
+          color: #656464;
+          font-size: 14px;
+          line-height: 16px;
         }
         .username {
+          margin-top: 60px;
           margin-bottom: 10px;
           /deep/ .el-input__inner {
             height: 45px;
