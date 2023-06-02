@@ -14,6 +14,19 @@ li {
 div {
   box-sizing: border-box;
 }
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track{
+  border-radius:8px;
+  background-color:#eee;
+}
+::-webkit-scrollbar-thumb{
+  border-radius:8px;
+  background-color: #ccc;
+}
 
 table {
   border-collapse: collapse;

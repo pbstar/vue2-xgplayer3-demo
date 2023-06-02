@@ -46,10 +46,14 @@ export default {
       if (e == 1) {
         this.$router.push("list");
       } else if (e == 2) {
-        this.$confirm("确认退出登录吗？").then(() => {
-          this.$unit.clearLocalStorage();
-          this.$router.push("login");
-        });
+        this.$confirm("确认退出登录吗？")
+          .then(() => {
+            this.$unit.clearLocalStorage();
+            this.$router.push("login");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
   },
@@ -73,30 +77,35 @@ export default {
       height: 48px;
       width: 300px;
     }
-  }
-  .f2box {
-    overflow: hidden;
-  }
-  .s2box {
-    position: relative;
-    z-index: auto;
-    height: calc(100vh - 60px);
-
-    .left {
-      position: absolute;
-      // left: -360px;
-      left: -446px;
-      width: 446px;
-      height: 657px;
-      background-image: url("@/assets/imgs/left-flower.png");
-    }
     .right {
-      position: absolute;
-      right: -729px;
-      width: 729px;
-      height: 866px;
-      background-image: url("@/assets/imgs/right-flower.png");
+      .el-dropdown-link {
+        cursor: pointer;
+      }
     }
   }
+  // .f2box {
+  //   overflow: hidden;
+  // }
+  // .s2box {
+  //   position: relative;
+  //   z-index: auto;
+  //   height: calc(100vh - 60px);
+
+  //   .left {
+  //     position: absolute;
+  //     // left: -360px;
+  //     left: -446px;
+  //     width: 446px;
+  //     height: 657px;
+  //     background-image: url("@/assets/imgs/left-flower.png");
+  //   }
+  //   .right {
+  //     position: absolute;
+  //     right: -729px;
+  //     width: 729px;
+  //     height: 866px;
+  //     background-image: url("@/assets/imgs/right-flower.png");
+  //   }
+  // }
 }
 </style>

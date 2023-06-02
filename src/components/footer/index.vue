@@ -3,6 +3,10 @@
     <div class="fbox">
       <div class="top"></div>
       <div class="mid">
+        <div class="title">
+          <h2>华普亿方在线培训系统</h2>
+        </div>
+
         <div class="mids w1200"></div>
       </div>
     </div>
@@ -29,7 +33,7 @@ export default {
 }
 .top {
   width: 1920px;
-  height: 98px;
+  height: 88px;
   background: url("@/assets/imgs/footer-top.png") #fff no-repeat top center;
   background-size: 100% 100%;
 }
@@ -37,6 +41,16 @@ export default {
   height: 272px;
   width: 1920px;
   background: url("@/assets/imgs/footer-mid.png") repeat-y;
+  position: relative;
+
+  .title {
+    color: #fff;
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: -25px;
+  }
   .mids {
     height: 220px;
     margin-top: 30px;

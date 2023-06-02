@@ -13,10 +13,15 @@
         <div class="mid">
           <div class="left">
             <div class="leftBox">
-              <xgVideo></xgVideo>
+              <xgVideo
+                :url="courseInfo.videoUrl"
+                @change="videoChange"
+              ></xgVideo>
             </div>
           </div>
-          <div class="right"></div>
+          <div class="right">
+            <directory :list="rightList" @change="directoryChange"></directory>
+          </div>
         </div>
       </div>
     </div>
@@ -29,6 +34,7 @@ import headerBox from "@/components/header";
 import footerBox from "@/components/footer";
 import xgVideo from "@/components/video";
 import topSwiper from "@/components/topSwiper";
+import directory from "@/components/directory";
 
 export default {
   name: "detail",
@@ -37,6 +43,7 @@ export default {
     footerBox,
     xgVideo,
     topSwiper,
+    directory,
   },
   watch: {
     topIndex: {
@@ -44,6 +51,7 @@ export default {
         if (this.list[val] && this.list[val].children) {
           this.rightList = this.list[val].children;
           console.log(this.rightList);
+          this.courseInfo = this.rightList[0].children[0];
         }
       },
       immediate: true,
@@ -55,6 +63,7 @@ export default {
       list: [],
       topIndex: "",
       rightList: [],
+      courseInfo: "",
     };
   },
   created() {
@@ -79,13 +88,17 @@ export default {
         if (res.code == 200 && res.data.length > 0) {
           this.list = res.data;
           this.topIndex = 0;
-          console.log(res.data);
         }
       });
     },
     toTopIndex(index) {
-      console.log(index);
       this.topIndex = index;
+    },
+    directoryChange(e) {
+      this.courseInfo = e;
+    },
+    videoChange(ctime) {
+      console.log(ctime);
     },
   },
 };
@@ -122,7 +135,6 @@ export default {
       .right {
         width: 300px;
         height: 498px;
-        background: #f1f1f1;
       }
     }
   }
