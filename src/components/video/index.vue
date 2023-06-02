@@ -12,6 +12,8 @@ export default {
   name: "xgVideo",
   props: {
     url: "",
+    isprogress: false,
+    isplaybackrate: false,
   },
   watch: {
     url: {
@@ -43,13 +45,16 @@ export default {
         this.player.destroy();
         this.player = null;
       }
+      let ignores = ["cssfullscreen"];
+      if (!this.isprogress) ignores.push("progress");
+      if (!this.isplaybackrate) ignores.push("playbackrate");
       this.player = new Player({
         el: this.$refs.xgplayer,
         url: this.url,
         poster: "./static/imgs/hopefound-video-pic.jpg",
         height: "100%",
         width: "100%",
-        ignores: ["progress", "cssfullscreen", "playbackrate"],
+        ignores,
       });
       this.player.on(Events.LOADED_DATA, (e) => {
         let time1 = setTimeout(() => {
