@@ -33,6 +33,10 @@
       :isShow="isShowVideoRecording"
       @complete="videoRecordingComplete"
     ></videoRecording>
+    <faceRecognition
+      :isShow="isShowFaceRecognition"
+      @complete="faceRecognitionComplete"
+    ></faceRecognition>
   </div>
 </template>
 
@@ -43,6 +47,7 @@ import xgVideo from "@/components/video";
 import topSwiper from "@/components/topSwiper";
 import directory from "@/components/directory";
 import videoRecording from "@/components/videoRecording";
+import faceRecognition from "@/components/faceRecognition";
 
 export default {
   name: "detail",
@@ -53,6 +58,7 @@ export default {
     topSwiper,
     directory,
     videoRecording,
+    faceRecognition,
   },
   watch: {
     topIndex: {
@@ -74,6 +80,7 @@ export default {
       rightList: [],
       courseInfo: "",
       isShowVideoRecording: false,
+      isShowFaceRecognition: false,
     };
   },
   created() {
@@ -118,6 +125,10 @@ export default {
         this.$refs.player.pause();
         this.isShowVideoRecording = true;
       }
+      if (ctime == 6) {
+        this.$refs.player.pause();
+        this.isShowFaceRecognition = true;
+      }
       console.log(999, ctime);
     },
     videoRecordingComplete(file) {
@@ -130,6 +141,11 @@ export default {
     },
     playEnd(e) {
       console.log("jieshu", e);
+    },
+    faceRecognitionComplete() {
+      console.log("人脸成功");
+      this.isShowFaceRecognition = false;
+      this.$refs.player.play();
     },
   },
 };

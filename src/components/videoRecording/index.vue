@@ -47,6 +47,9 @@ export default {
       loading: false,
     };
   },
+  beforeDestroy() {
+    this.stop();
+  },
   mounted() {},
   methods: {
     getStart() {
@@ -124,7 +127,7 @@ export default {
           type: "video/mp4",
           lastModified: timestamp,
         });
-        this.$emit("complete", file);
+
         if (this.isDownLoad) {
           const videoUrl = window.URL.createObjectURL(blob);
           let a = document.createElement("a");
@@ -132,6 +135,7 @@ export default {
           a.download = filename;
           a.click();
         }
+        this.$emit("complete", file);
       };
     },
     // 停止录制
