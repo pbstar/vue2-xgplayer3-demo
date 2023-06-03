@@ -15,7 +15,7 @@
             :class="indexs % 2 != 0 ? 'bbox2n' : ''"
             v-for="(items, indexs) in item.children"
             :key="indexs + 's'"
-            @click="toCourse(items, indexs)"
+            @click="toCourse(items, indexs, index)"
           >
             <div class="bbtype">{{ items.sectionInfo }}</div>
             <div class="bbtitle overflowDot1">{{ items.sectionTitle }}</div>
@@ -105,11 +105,11 @@ export default {
         this.expansionIndex = index;
       }
     },
-    toCourse(e, index) {
+    toCourse(e, indexs, index) {
       if (
         this.isToping &&
         this.expansionIndex == this.cIndex &&
-        index > this.sIndex
+        indexs > this.sIndex
       ) {
         this.$message({
           message:
@@ -120,7 +120,11 @@ export default {
         });
         return;
       }
-      this.$emit("change", e);
+      let isFirstLearn = false;
+      if (index == this.cIndex && indexs == this.sIndex) {
+        isFirstLearn = true;
+      }
+      this.$emit("change", e, isFirstLearn);
     },
     getSectionState(index, indexs) {
       if (!this.isToping) {

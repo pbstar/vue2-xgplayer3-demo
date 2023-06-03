@@ -16,6 +16,7 @@
               <xgVideo
                 ref="player"
                 :url="courseInfo.videoUrl"
+                :isFirstLearn="isFirstLearn"
                 @change="videoChange"
                 @playStart="playStart"
                 @playEnd="playEnd"
@@ -73,12 +74,14 @@ export default {
           this.rightList = this.list[val].children;
           if (val == this.courseProgressIndex.mouduleId) {
             this.isToping = true;
+            this.isFirstLearn = true;
             this.courseInfo =
               this.rightList[this.courseProgressIndex.courseId].children[
                 this.courseProgressIndex.sectionId
               ];
           } else {
             this.isToping = false;
+            this.isFirstLearn = false;
             this.courseInfo = this.rightList[0].children[0];
           }
         }
@@ -102,6 +105,7 @@ export default {
         sectionId: 0,
       },
       isToping: false,
+      isFirstLearn: true,
     };
   },
   created() {
@@ -183,15 +187,16 @@ export default {
     toTopIndex(index) {
       this.topIndex = index;
     },
-    directoryChange(e) {
+    directoryChange(e, isFirstLearn) {
+      this.isFirstLearn = isFirstLearn;
       this.courseInfo = e;
     },
     videoChange(ctime) {
-      if (ctime == 3) {
+      if (ctime == 3&&this.isFirstLearn) {
         this.$refs.player.pause();
         this.isShowVideoRecording = true;
       }
-      if (ctime == 6) {
+      if (ctime == 6&&this.isFirstLearn) {
         this.$refs.player.pause();
         this.isShowFaceRecognition = true;
       }

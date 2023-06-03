@@ -15,6 +15,10 @@ export default {
       type: String,
       default: "",
     },
+    isFirstLearn: {
+      type: Boolean,
+      default: true,
+    },
     isprogress: {
       type: Boolean,
       default: false,
@@ -83,7 +87,10 @@ export default {
       }
       function getIgnores(that) {
         let ignores = ["cssfullscreen"];
-        if (!that.isprogress) ignores.push("progress");
+        if (that.isFirstLearn) {
+          if (!that.isprogress) ignores.push("progress");
+        }
+
         if (!that.isplaybackrate) ignores.push("playbackrate");
         return ignores;
       }
