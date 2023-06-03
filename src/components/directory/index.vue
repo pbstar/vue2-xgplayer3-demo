@@ -15,10 +15,22 @@
             :class="indexs % 2 != 0 ? 'bbox2n' : ''"
             v-for="(items, indexs) in item.children"
             :key="indexs + 's'"
-            @click="toCourse(items)"
+            @click="toCourse(items, indexs)"
           >
             <div class="bbtype">{{ items.sectionInfo }}</div>
             <div class="bbtitle overflowDot1">{{ items.sectionTitle }}</div>
+            <div
+              class="bbstate"
+              :class="
+                getSectionState(index, indexs) == '已完成'
+                  ? 'bbstate1'
+                  : getSectionState(index, indexs) == '进行中'
+                  ? 'bbstate2'
+                  : 'bbstate3'
+              "
+            >
+              {{ getSectionState(index, indexs) }}
+            </div>
           </div>
         </div>
       </div>
@@ -34,7 +46,44 @@ export default {
       type: Array,
       default: [],
     },
+    cIndex: {
+      type: Number,
+      default: 0,
+    },
+    sIndex: {
+      type: Number,
+      default: 0,
+    },
+    isToping: {
+      type: Boolean,
+      default: false,
+    },
   },
+  watch: {
+    cIndex: {
+      handler(val) {
+        if (val) {
+          if (this.isToping) {
+            this.expansionIndex = val;
+          } else {
+            this.expansionIndex = 0;
+          }
+        }
+      },
+      immediate: true,
+    },
+    isToping: {
+      handler(val) {
+        if (val) {
+          this.expansionIndex = this.cIndex;
+        } else {
+          this.expansionIndex = 0;
+        }
+      },
+      immediate: true,
+    },
+  },
+
   data() {
     return {
       expansionIndex: 0,
@@ -42,14 +91,54 @@ export default {
   },
   methods: {
     toAtop(item, index) {
+      if (this.isToping && index > this.cIndex) {
+        this.$message({
+          message:
+            "请先完成课程：《" + this.list[this.cIndex].courseTitle + "》！",
+          type: "warning",
+        });
+        return;
+      }
       if (this.expansionIndex == index) {
         this.expansionIndex = -1;
       } else {
         this.expansionIndex = index;
       }
     },
-    toCourse(e) {
+    toCourse(e, index) {
+      if (
+        this.isToping &&
+        this.expansionIndex == this.cIndex &&
+        index > this.sIndex
+      ) {
+        this.$message({
+          message:
+            "请先完成课程：《" +
+            this.list[this.cIndex].children[this.sIndex].sectionTitle +
+            "》！",
+          type: "warning",
+        });
+        return;
+      }
       this.$emit("change", e);
+    },
+    getSectionState(index, indexs) {
+      if (!this.isToping) {
+        return "已完成";
+      }
+      if (index < this.cIndex) {
+        return "已完成";
+      } else if (index > this.cIndex) {
+        return "未开始";
+      } else {
+        if (indexs < this.sIndex) {
+          return "已完成";
+        } else if (indexs > this.sIndex) {
+          return "未开始";
+        } else {
+          return "进行中";
+        }
+      }
     },
   },
 };
@@ -120,7 +209,29 @@ export default {
         }
         .bbtitle {
           font-size: 14px;
-          width: 160px;
+          width: 165px;
+        }
+        .bbstate {
+          width: 46px;
+          height: 20px;
+          line-height: 16px;
+          text-align: center;
+          font-size: 12px;
+          border: 1px solid #666;
+          color: #666;
+          border-radius: 5px;
+        }
+        .bbstate1 {
+          border: 1px solid #00cea4;
+          color: #00cea4;
+        }
+        .bbstate2 {
+          border: 1px solid #ed3e61;
+          color: #ed3e61;
+        }
+        .bbstate3 {
+          border: 1px solid #8e8e8e;
+          color: #8e8e8e;
         }
       }
       .bbox2n {

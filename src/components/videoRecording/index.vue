@@ -67,6 +67,7 @@ export default {
           this.mediaStreamTrack =
             typeof stream.stop === "function" ? stream : stream.getTracks()[0];
           this.video_stream = stream;
+          if (!this.$refs.video) return;
           this.$refs.video.srcObject = stream;
           this.$refs.video.play();
           this.record();
@@ -140,6 +141,7 @@ export default {
     },
     // 停止录制
     stop() {
+      if (!this.$refs.video) return;
       if (!this.$refs.video.srcObject) return;
       const stream = this.$refs.video.srcObject;
       const tracks = stream.getTracks();

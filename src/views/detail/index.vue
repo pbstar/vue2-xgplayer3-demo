@@ -6,7 +6,7 @@
         <div class="top">
           <topSwiper
             :list="list"
-            :index="topIndex"
+            :index="courseProgressIndex.mouduleId"
             @change="toTopIndex"
           ></topSwiper>
         </div>
@@ -23,7 +23,13 @@
             </div>
           </div>
           <div class="right">
-            <directory :list="rightList" @change="directoryChange"></directory>
+            <directory
+              :list="rightList"
+              :cIndex="courseProgressIndex.courseId"
+              :sIndex="courseProgressIndex.sectionId"
+              :isToping="isToping"
+              @change="directoryChange"
+            ></directory>
           </div>
         </div>
       </div>
@@ -65,8 +71,16 @@ export default {
       handler(val) {
         if (this.list[val] && this.list[val].children) {
           this.rightList = this.list[val].children;
-          console.log(this.rightList);
-          this.courseInfo = this.rightList[0].children[0];
+          if (val == this.courseProgressIndex.mouduleId) {
+            this.isToping = true;
+            this.courseInfo =
+              this.rightList[this.courseProgressIndex.courseId].children[
+                this.courseProgressIndex.sectionId
+              ];
+          } else {
+            this.isToping = false;
+            this.courseInfo = this.rightList[0].children[0];
+          }
         }
       },
       immediate: true,
@@ -81,6 +95,13 @@ export default {
       courseInfo: "",
       isShowVideoRecording: false,
       isShowFaceRecognition: false,
+      courseProgress: {},
+      courseProgressIndex: {
+        mouduleId: 0,
+        courseId: 0,
+        sectionId: 0,
+      },
+      isToping: false,
     };
   },
   created() {
@@ -107,12 +128,57 @@ export default {
       this.$http.getCourseList(this.name).then((res) => {
         if (res.code == 200 && res.data.length > 0) {
           this.list = res.data;
-          this.topIndex = 0;
+          this.getCourseProgress();
         }
       });
     },
     getCourseProgress() {
       let courseProgress = {};
+      if (this.name == "gyb") {
+        courseProgress = {
+          mouduleId: "gyb-1",
+          courseId: "gyb-1-2",
+          sectionId: "gyb-1-2-4",
+        };
+      } else if (this.name == "syb") {
+        courseProgress = {
+          mouduleId: "sybExtend-6",
+          courseId: "sybExtend-6-1",
+          sectionId: "sybExtend-6-1-1",
+        };
+      } else if (this.name == "netCreation") {
+        courseProgress = {
+          mouduleId: "projectSection",
+          courseId: "projectSection4",
+          sectionId: "projectSection4-2",
+        };
+      }
+      this.courseProgress = courseProgress;
+      for (let a = 0; a < this.list.length; a++) {
+        if (this.list[a].mouduleId == this.courseProgress.mouduleId) {
+          this.courseProgressIndex.mouduleId = a;
+          this.topIndex = a;
+          for (let b = 0; b < this.list[a].children.length; b++) {
+            if (
+              this.list[a].children[b].courseId == this.courseProgress.courseId
+            ) {
+              this.courseProgressIndex.courseId = b;
+              for (
+                let c = 0;
+                c < this.list[a].children[b].children.length;
+                c++
+              ) {
+                if (
+                  this.list[a].children[b].children[c].sectionId ==
+                  this.courseProgress.sectionId
+                ) {
+                  this.courseProgressIndex.sectionId = c;
+                }
+              }
+            }
+          }
+        }
+      }
     },
     toTopIndex(index) {
       this.topIndex = index;

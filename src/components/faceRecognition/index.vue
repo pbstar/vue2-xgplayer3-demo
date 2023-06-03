@@ -82,11 +82,10 @@ export default {
         })
         .then((stream) => {
           this.loading = false;
+          if (!this.$refs.video) return;
           this.$refs.video.srcObject = stream;
           this.$refs.video.play();
-          this.$nextTick(() => {
-            this.checkFace();
-          });
+          this.checkFace();
         })
         .catch((err) => {
           this.loading = false;
@@ -142,6 +141,7 @@ export default {
         clearInterval(this.myInterval);
         this.trackerTask.stop();
       }
+      if (!this.$refs.video) return;
       if (!this.$refs.video.srcObject) return;
       const stream = this.$refs.video.srcObject;
       const tracks = stream.getTracks();
