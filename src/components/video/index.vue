@@ -45,9 +45,10 @@ export default {
         this.player.destroy();
         this.player = null;
       }
-      let ignores = ["cssfullscreen"];
-      if (!this.isprogress) ignores.push("progress");
-      if (!this.isplaybackrate) ignores.push("playbackrate");
+
+      let ignores = getIgnores(this);
+      let startTime = getStartTime(this);
+
       this.player = new Player({
         el: this.$refs.xgplayer,
         url: this.url,
@@ -55,19 +56,46 @@ export default {
         height: "100%",
         width: "100%",
         ignores,
+        startTime,
       });
+      this.loadedData();
+      this.timeUpdate();
+
+      function getStartTime(that) {
+        let video_url = that.$unit.getLocalStorage("video_url");
+        let video_progress = that.$unit.getLocalStorage("video_progress");
+        let startTime = 0;
+        if (video_url == that.url) {
+          startTime = video_progress;
+        } else {
+          that.$unit.removeLocalStorage("video_progress");
+        }
+        return startTime;
+      }
+      function getIgnores(that) {
+        let ignores = ["cssfullscreen"];
+        if (!that.isprogress) ignores.push("progress");
+        if (!that.isplaybackrate) ignores.push("playbackrate");
+        return ignores;
+      }
+    },
+    loadedData() {
       this.player.on(Events.LOADED_DATA, (e) => {
+        this.$unit.setLocalStorage("video_url", this.url);
         let time1 = setTimeout(() => {
           this.loading = false;
           clearTimeout(time1);
         }, 300);
       });
+    },
+    timeUpdate() {
       let currentTime = 0;
       let ctime = 0;
       this.player.on(Events.TIME_UPDATE, (e) => {
         ctime = Math.round(e.currentTime);
         if (ctime == currentTime) return;
         else currentTime = ctime;
+        this.$unit.setLocalStorage("video_progress", ctime);
         this.$emit("change", ctime);
       });
     },

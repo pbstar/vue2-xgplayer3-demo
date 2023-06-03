@@ -74,10 +74,12 @@ export default {
   .fbox {
     display: flex;
     align-items: flex-end;
+    align-content: flex-start;
     flex-wrap: wrap;
-    padding: 30px 0 50px;
+    padding: 30px 0 80px;
+    min-height: calc(100vh - 230px);
     .sbox {
-      width: 180px;
+      width: 160px;
       margin: 20px;
       cursor: pointer;
       img {

@@ -91,6 +91,9 @@ export default {
         }
       });
     },
+    getCourseProgress() {
+      let courseProgress = {};
+    },
     toTopIndex(index) {
       this.topIndex = index;
     },

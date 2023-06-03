@@ -64,9 +64,7 @@ export default {
   background: #fff;
   width: 100%;
   height: 60px;
-  line-height: 60px;
-  box-shadow: 0 2px 8px 0 rgba(7, 17, 27, 0.1);
-  z-index: 1000;
+  border-bottom: 1px solid #eeeeee89;
 
   .sbox {
     height: 100%;
