@@ -11,9 +11,18 @@ import "xgplayer/dist/index.min.css";
 export default {
   name: "xgVideo",
   props: {
-    url: "",
-    isprogress: false,
-    isplaybackrate: false,
+    url: {
+      type: String,
+      default: "",
+    },
+    isprogress: {
+      type: Boolean,
+      default: false,
+    },
+    isplaybackrate: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     url: {
@@ -45,22 +54,22 @@ export default {
         this.player.destroy();
         this.player = null;
       }
+      this.$nextTick(() => {
+        let ignores = getIgnores(this);
+        let startTime = getStartTime(this);
 
-      let ignores = getIgnores(this);
-      let startTime = getStartTime(this);
-
-      this.player = new Player({
-        el: this.$refs.xgplayer,
-        url: this.url,
-        poster: "./static/imgs/hopefound-video-pic.jpg",
-        height: "100%",
-        width: "100%",
-        ignores,
-        startTime,
+        this.player = new Player({
+          el: this.$refs.xgplayer,
+          url: this.url,
+          poster: "./static/imgs/hopefound-video-pic.jpg",
+          height: "100%",
+          width: "100%",
+          ignores,
+          startTime,
+        });
+        this.loadedData();
+        this.timeUpdate();
       });
-      this.loadedData();
-      this.timeUpdate();
-
       function getStartTime(that) {
         let video_url = that.$unit.getLocalStorage("video_url");
         let video_progress = that.$unit.getLocalStorage("video_progress");
@@ -79,6 +88,16 @@ export default {
         return ignores;
       }
     },
+    play() {
+      if (this.player) {
+        this.player.play();
+      }
+    },
+    pause() {
+      if (this.player) {
+        this.player.pause();
+      }
+    },
     loadedData() {
       this.player.on(Events.LOADED_DATA, (e) => {
         this.$unit.setLocalStorage("video_url", this.url);
@@ -92,6 +111,7 @@ export default {
       let currentTime = 0;
       let ctime = 0;
       this.player.on(Events.TIME_UPDATE, (e) => {
+        if (e.paused) return;
         ctime = Math.round(e.currentTime);
         if (ctime == currentTime) return;
         else currentTime = ctime;

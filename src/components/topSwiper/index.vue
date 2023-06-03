@@ -36,8 +36,14 @@ import "swiper/css/swiper.min.css";
 export default {
   name: "topSwiper",
   props: {
-    list: [],
-    index: "",
+    list: {
+      type: Array,
+      default: [],
+    },
+    index: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {};

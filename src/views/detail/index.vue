@@ -14,6 +14,7 @@
           <div class="left">
             <div class="leftBox">
               <xgVideo
+                ref="player"
                 :url="courseInfo.videoUrl"
                 @change="videoChange"
               ></xgVideo>
@@ -26,6 +27,10 @@
       </div>
     </div>
     <footerBox></footerBox>
+    <videoRecording
+      :isShow="isShowVideoRecording"
+      @complete="videoRecordingComplete"
+    ></videoRecording>
   </div>
 </template>
 
@@ -35,6 +40,7 @@ import footerBox from "@/components/footer";
 import xgVideo from "@/components/video";
 import topSwiper from "@/components/topSwiper";
 import directory from "@/components/directory";
+import videoRecording from "@/components/videoRecording";
 
 export default {
   name: "detail",
@@ -44,6 +50,7 @@ export default {
     xgVideo,
     topSwiper,
     directory,
+    videoRecording,
   },
   watch: {
     topIndex: {
@@ -61,9 +68,10 @@ export default {
     return {
       name: "",
       list: [],
-      topIndex: "",
+      topIndex: -1,
       rightList: [],
       courseInfo: "",
+      isShowVideoRecording: false,
     };
   },
   created() {
@@ -81,6 +89,9 @@ export default {
     }
     this.name = this.$route.query.name;
     this.getList();
+  },
+  beforeDestroy() {
+    if (this.isShowVideoRecording) this.isShowVideoRecording = false;
   },
   methods: {
     getList() {
@@ -101,7 +112,16 @@ export default {
       this.courseInfo = e;
     },
     videoChange(ctime) {
-      console.log(ctime);
+      if (ctime == 3) {
+        this.$refs.player.pause();
+        this.isShowVideoRecording = true;
+      }
+      console.log(999, ctime);
+    },
+    videoRecordingComplete(file) {
+      console.log(file);
+      this.isShowVideoRecording = false;
+      this.$refs.player.play();
     },
   },
 };

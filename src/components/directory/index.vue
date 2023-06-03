@@ -30,7 +30,10 @@
 export default {
   name: "directory",
   props: {
-    list: [],
+    list: {
+      type: Array,
+      default: [],
+    },
   },
   data() {
     return {
