@@ -69,6 +69,8 @@ export default {
         });
         this.loadedData();
         this.timeUpdate();
+        this.playStart();
+        this.playEnd();
       });
       function getStartTime(that) {
         let video_url = that.$unit.getLocalStorage("video_url");
@@ -76,8 +78,6 @@ export default {
         let startTime = 0;
         if (video_url == that.url) {
           startTime = video_progress;
-        } else {
-          that.$unit.removeLocalStorage("video_progress");
         }
         return startTime;
       }
@@ -100,11 +100,25 @@ export default {
     },
     loadedData() {
       this.player.on(Events.LOADED_DATA, (e) => {
-        this.$unit.setLocalStorage("video_url", this.url);
         let time1 = setTimeout(() => {
           this.loading = false;
           clearTimeout(time1);
         }, 300);
+      });
+    },
+    playStart() {
+      this.player.on(Events.PLAY, (e) => {
+        if (e.currentTime == 0) {
+          this.$unit.setLocalStorage("video_url", this.url);
+          this.$emit("playStart", e);
+        }
+      });
+    },
+    playEnd() {
+      this.player.on(Events.ENDED, (e) => {
+        this.$unit.removeLocalStorage("video_progress");
+        this.$unit.removeLocalStorage("video_url");
+        this.$emit("playEnd", e);
       });
     },
     timeUpdate() {

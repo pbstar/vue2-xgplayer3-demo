@@ -17,6 +17,8 @@
                 ref="player"
                 :url="courseInfo.videoUrl"
                 @change="videoChange"
+                @playStart="playStart"
+                @playEnd="playEnd"
               ></xgVideo>
             </div>
           </div>
@@ -122,6 +124,12 @@ export default {
       console.log(file);
       this.isShowVideoRecording = false;
       this.$refs.player.play();
+    },
+    playStart(e) {
+      console.log("kaishi", e);
+    },
+    playEnd(e) {
+      console.log("jieshu", e);
     },
   },
 };
